@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* DESIGN.md: Claude / Anthropic 设计语言 token */
+:root {
+  --radius: 0.75rem;
+  --background: #faf9f5;
+  --foreground: #141413;
+  --card: #f5f0e8;
+  --card-foreground: #141413;
+  --popover: #faf9f5;
+  --popover-foreground: #141413;
+  --primary: #cc785c;
+  --primary-foreground: #ffffff;
+  --secondary: #efe9de;
+  --secondary-foreground: #141413;
+  --muted: #efe9de;
+  --muted-foreground: #6c6a64;
+  --accent: #efe9de;
+  --accent-foreground: #141413;
+  --destructive: #c64545;
+  --destructive-foreground: #ffffff;
+  --border: #e6dfd8;
+  --input: #e6dfd8;
+  --ring: #cc785c;
+  --green: #5db872;
+  --orange: #c64545;
+  --teal: #5db8a6;
+  --amber: #e8a55a;
+  --dark: #181715;
+  --dark-elevated: #252320;
+  --on-dark: #faf9f5;
+  --on-dark-soft: #a09d96;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-green: var(--green);
+  --color-orange: var(--orange);
+  --color-teal: var(--teal);
+  --color-amber: var(--amber);
+  --color-dark: var(--dark);
+  --color-dark-elevated: var(--dark-elevated);
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-soft: var(--on-dark-soft);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-display:
+    "Tiempos Headline", "Cormorant Garamond", Georgia, "Songti SC", "STSong", serif;
+  --font-sans:
+    Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    /* 常驻垂直滚动条：避免内容变短时滚动条消失引起横向布局偏移 */
+    overflow-y: scroll;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+}
+
+/* README 内容（GitHub 风格，奶油底色） */
+.readme h1,
+.readme h2,
+.readme h3,
+.readme h4,
+.readme h5,
+.readme h6 {
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  margin: 22px 0 12px;
+  line-height: 1.3;
+}
+.readme h1 {
+  font-size: 1.8em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.readme h2 {
+  font-size: 1.4em;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.readme h3 {
+  font-size: 1.15em;
+}
+.readme h4 {
+  font-size: 1em;
+}
+.readme p {
+  margin: 0 0 14px;
+}
+.readme a {
+  color: var(--primary);
+}
+.readme ul,
+.readme ol {
+  margin: 0 0 14px;
+  padding-left: 26px;
+}
+.readme li {
+  margin: 4px 0;
+}
+.readme li input[type="checkbox"] {
+  margin-right: 6px;
+  vertical-align: -1px;
+}
+.readme code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: #efe9de;
+  border-radius: 5px;
+  padding: 2px 5px;
+}
+.readme pre {
+  position: relative;
+  background: #f0ece3;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 0 0 14px;
+  line-height: 1.55;
+}
+.readme pre .md-lang {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #8e8b82;
+}
+.readme pre code {
+  background: none;
+  padding: 0;
+  font-size: 12.5px;
+}
+.readme blockquote {
+  margin: 0 0 14px;
+  padding: 2px 16px;
+  color: var(--muted-foreground);
+  border-left: 4px solid #d9d2c8;
+}
+.readme blockquote p {
+  margin: 6px 0;
+}
+.readme hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 22px 0;
+}
+.readme img {
+  /* 覆盖 Tailwind preflight 的 display:block，徽章保持 inline 同行显示（与 GitHub 一致） */
+  display: inline;
+  max-width: 100%;
+  border-radius: 6px;
+  vertical-align: middle;
+}
+.readme table {
+  border-collapse: collapse;
+  margin: 0 0 14px;
+  font-size: 13.5px;
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.readme th,
+.readme td {
+  border: 1px solid var(--border);
+  padding: 6px 13px;
+  text-align: left;
+}
+.readme th {
+  background: var(--muted);
+  font-weight: 600;
+}
