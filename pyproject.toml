@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "github-hot"
+version = "0.1.0"
+description = "GitHub 最近一周 Star 增长最快的开源项目调研工具"
+readme = "README.md"
+requires-python = ">=3.9"
+
+[project.scripts]
+github-hot = "github_hot.tui:main"
+github-hot-cli = "github_hot.cli:main"
+
+[tool.setuptools]
+packages = ["github_hot"]
