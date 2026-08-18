@@ -6,3 +6,5 @@ data/
 .env
 
 frontend/node_modules/
+claude/
+github_hot.egg-info/
