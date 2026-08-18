@@ -10,9 +10,7 @@
 
 ## 界面预览
 
-| 桌面端榜单 | 移动端 |
-|:---:|:---:|
-| ![桌面端榜单](docs/screenshots/desktop.png) | ![移动端榜单](docs/screenshots/mobile.png) |
+![桌面端榜单](docs/screenshots/desktop.png)
 
 仓库详情页支持 README 原文 / AI 中文版双语切换：
 
