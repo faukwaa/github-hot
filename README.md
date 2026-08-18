@@ -1,10 +1,22 @@
 # github-hot
 
+[![Auto Collect](https://github.com/faukwaa/github-hot/actions/workflows/collect.yml/badge.svg)](https://github.com/faukwaa/github-hot/actions/workflows/collect.yml)
+
 调研 GitHub 最近一周 Star 增长最快的开源项目（全部收录，AI 项目自动标注）。
 
 工具每天抓取 GitHub Trending 的 weekly 页面（全部语言 + Python、TypeScript、JavaScript、Go、Rust、C++、Jupyter Notebook），解析每个仓库的“本周新增 Star”，并用关键词与 topics 给 AI 项目打标（不默认过滤）。可选通过 GitHub Search API 补充一周内新创建的高 Star AI 仓库，并把结果存入 SQLite，输出 CLI 榜单或 Web 仪表盘。
 
 **每次拉取都是一个任务**：采集完成后登记为一条任务记录，配置 AI Key 后，AI 会给该次拉取写一段任务总结，并为每个仓库生成一句中文简介（存入库中，CLI 与 Web 都会展示）。
+
+## 界面预览
+
+| 桌面端榜单 | 移动端 |
+|:---:|:---:|
+| ![桌面端榜单](docs/screenshots/desktop.png) | ![移动端榜单](docs/screenshots/mobile.png) |
+
+仓库详情页支持 README 原文 / AI 中文版双语切换：
+
+![仓库详情页](docs/screenshots/detail.png)
 
 ## 快速开始
 
@@ -37,6 +49,14 @@ npm run build
 ```
 
 构建产物输出到 `frontend/dist/`，`python3 -m github_hot serve` 会自动托管；未构建时回退到内置精简版页面。开发时可 `npm run dev`（默认代理到 127.0.0.1:8799 的 API）。
+
+## 自动采集（GitHub Actions）
+
+仓库内置每日自动采集：北京时间每天 09:30 由 Actions 在 `data` 分支上运行 `collect` 并提交最新数据库，无需本地开机。
+
+- 手动触发：仓库 Actions → Auto Collect → Run workflow
+- 云端 AI 总结需在仓库 Settings → Secrets and variables → Actions 添加 `DEEPSEEK_API_KEY`（可选）
+- 同步云端最新数据到本地：`git fetch origin && git checkout origin/data -- data/github_hot.db`
 
 ## 交互式终端工具
 
