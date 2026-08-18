@@ -190,6 +190,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     if args.command in (None, "report"):
         store = Store(args.db).connect()
         rows = store.load_latest(limit=1000)
+        tasks = store.list_tasks(limit=args.limit) if args.json else None
         store.close()
         if args.ai_only:
             rows = [row for row in rows if row.get("ai_reasons")]
@@ -198,7 +199,8 @@ def main(argv: Optional[list[str]] = None) -> int:
             print("暂无数据，请先运行: python -m github_hot collect", file=sys.stderr)
             return 1
         if args.json:
-            print(json.dumps(report, ensure_ascii=False, indent=2))
+            # AI 友好输出：榜单 + 任务历史（含最新任务总结）一次返回
+            print(json.dumps({"report": report, "tasks": tasks}, ensure_ascii=False, indent=2))
         else:
             meta = report["meta"]
             print(f"数据采集时间: {meta['collected_at']}")

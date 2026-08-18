@@ -56,6 +56,63 @@ npm run build
 - 云端 AI 总结需在仓库 Settings → Secrets and variables → Actions 添加 `DEEPSEEK_API_KEY`（可选）
 - 同步云端最新数据到本地：`git fetch origin && git checkout origin/data -- data/github_hot.db`
 
+## 通过 AI 调用
+
+所有命令都有稳定的人类可读输出与机器可读输出，适合交给 AI 助手（Claude Code、Cursor、任意 Agent）代为执行与解读。
+
+### 给 AI 的提示词（可直接复制）
+
+```text
+你可以使用 github-hot-cli 管理并分析 GitHub 热度周榜（项目位于 ~/code/AI/github-hot）。
+可用命令：
+- github-hot-cli collect [--no-ai] [--languages a,b] [--since daily|weekly|monthly]
+  [--ai-only] [--with-search] [--api-top N]  采集一次数据，每次采集登记为一个任务
+- github-hot-cli report [--limit N] [--ai-only] [--json]  输出榜单；--json 时返回
+  {"report": {items, meta}, "tasks": [...]}，tasks 含每次采集的 AI 总结
+- github-hot-cli tasks [--delete ID]  查看/删除任务历史
+- github-hot-cli serve [--port 8787]  启动 Web 仪表盘
+数据字段：items[].full_name / stars / weekly_stars / weekly_growth(%) /
+language / is_ai / ai_summary(中文一句话简介)；tasks[].summary(该次采集的中文总结)。
+常用做法：先 collect，再 report --json 解析结果回答我的问题。
+```
+
+### 机器可读输出
+
+`--json` 返回单一 JSON 对象，适合 AI 直接解析：
+
+```bash
+github-hot-cli report --json --limit 10        # 榜单 + 任务历史（含 AI 总结）
+github-hot-cli report --json --ai-only         # 只看 AI 项目
+```
+
+返回结构：
+
+```json
+{
+  "report": {
+    "items": [
+      {"full_name": "...", "stars": 20900, "weekly_stars": 16300,
+       "weekly_growth": 352.1, "language": "HTML", "is_ai": true,
+       "ai_summary": "中文一句话简介", "url": "https://github.com/..."}
+    ],
+    "meta": {"collected_at": "...", "repo_count": 127, "ai_count": 65}
+  },
+  "tasks": [
+    {"id": 23, "collected_at": "...", "repo_count": 127, "summary": "该次采集的 AI 中文总结"}
+  ]
+}
+```
+
+要点：采集进度与人类提示走 stderr，stdout 只有纯 JSON，管道安全；`--no-ai` 可在未配置 AI Key 时正常采集。
+
+### 作为 Claude Code / Agent 技能
+
+把上面的提示词保存为项目内 `SKILL.md`（或放入 `.claude/skills/`），Agent 即可自主完成“采集 → 解析 → 回答”闭环，例如：
+
+- “帮我看看本周涨星最快的 3 个项目是什么，分别干什么的”
+- “只看 AI 项目，按增长率排序”
+- “把最新一次采集的总结发我”
+
 ## 交互式终端工具
 
 在项目目录直接运行交互式菜单，可以在终端里完成采集、看榜单、查看任务历史、启停 Web 仪表盘：
