@@ -23,6 +23,10 @@ jobs:
           ref: data
           fetch-depth: 1
 
+      - name: 获取 main 分支源码（仅用于安装，不提交到 data 分支）
+        run: |
+          curl -sL "https://github.com/${GITHUB_REPOSITORY}/archive/refs/heads/main.tar.gz" | tar xz --strip-components=1
+
       - name: 安装 Python
         uses: actions/setup-python@v5
         with:
